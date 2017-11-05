@@ -1,11 +1,12 @@
-var http = require('http');
+var express = require('express');
+var app = express();
+var dataFile = require('./data/data.json');
 
-var myServer = http.createServer(function(request,response)
-{
-	response.writeHead(200,{"Content-Type":"text/plain"});
+app.set('port',process.env.PORT || 3000);
+app.set('appData',dataFile);
 
-	response.write("Hello world");
-	response.end();
+app.use(require('./routes/index'));
+
+var server = app.listen(app.get('port'),function(){
+	console.log('Listening on port '+app.get('port'));
 });
-
-myServer.listen(3000);
