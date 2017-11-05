@@ -4,8 +4,7 @@
   "description": "Proyecto 1 de estructuras",
   "main": "app/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app/app.js"
+    "start": "nodemon app/app.js"
   },
   "repository": {
     "type": "git",
