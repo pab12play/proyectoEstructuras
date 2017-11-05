@@ -1,0 +1,23 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "Proyecto 1 de estructuras",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pab12play/proyectoEstructuras.git"
+  },
+  "author": "Pablo Pineda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pab12play/proyectoEstructuras/issues"
+  },
+  "homepage": "https://github.com/pab12play/proyectoEstructuras#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
