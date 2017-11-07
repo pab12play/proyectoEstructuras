@@ -13,8 +13,9 @@ router.get('/',function(request,response){
 		`
 	});
 	response.send(`
-			<h1>Hello world</h1>
+			<h1>Hello</h1>
 			${info}
+			<script src="/reload/reload.js"></script>
 		`);
 });
 

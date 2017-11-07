@@ -18,6 +18,7 @@
   "homepage": "https://github.com/pab12play/proyectoEstructuras#readme",
   "dependencies": {
     "express": "^4.16.2",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.12.1",
+    "reload": "^2.2.2"
   }
 }
