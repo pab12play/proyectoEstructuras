@@ -1,3 +1,14 @@
+
+$('.formUser').submit(function(e) {
+	e.preventDefault();
+	$.post('/api/user',{
+		user: $('#user').val(),
+		pass: $('#pass').val()
+	});
+});
+
+
+/*
 $('.formUser').submit(function(e) {
 	e.preventDefault();
 	var data = {"user":$('#user').val(),"pass":$('#pass').val()};
@@ -12,15 +23,7 @@ $('.formUser').submit(function(e) {
 
 
 
-/*
 
-$('.formUser').submit(function(e) {
-	e.preventDefault();
-	$.post('/api/user',{
-		name: $('#user').val(),
-		pass: $('#pass').val()
-	});
-});
 
 $.ajax({
 	type: verb,
