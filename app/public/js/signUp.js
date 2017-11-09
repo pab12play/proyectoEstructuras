@@ -4,6 +4,11 @@ $('.formUser').submit(function(e) {
 	$.post('/api/user',{
 		user: $('#user').val(),
 		pass: $('#pass').val()
+	}, function(){
+		alert("User created");
+	})
+	.fail(function(){
+		alert("Error user already exist");
 	});
 });
 

@@ -32,16 +32,27 @@ router.get('/api/user/:_id',function(request,response){
 });
 
 router.post('/api/user',function(request,response){
-	var user = request.body;
-	console.log(user);
-	User.addUser(user, function(err, user){
+	var user1 = request.body;
+	User.getUserByName(user1, function(err,user){
 		if(err){
 			console.log('error '+user);
 			throw err;
 		}
-		console.log('user inserted');
-		response.json(user);
-	});
+		if(user===null){
+			User.addUser(user1, function(err, user2){
+				if(err){
+					console.log('error '+user2);
+					throw err;
+				}
+				console.log('User '+user2+' created');
+				response.json(user2);
+			});
+		}else{
+			response.status(401).send({
+			   message: 'User already exists'
+			});
+		}
+	});	
 });
 
 router.put('/api/user/:_id',function(request,response){
@@ -51,6 +62,7 @@ router.put('/api/user/:_id',function(request,response){
 		if(err){
 			throw err;
 		}
+		console.log('User '+user+' updated');
 		response.json(user);
 	});
 });
@@ -62,6 +74,7 @@ router.delete('/api/user/:_id',function(request,response){
 		if(err){
 			throw err;
 		}
+		console.log('User '+id+' deleted');
 		response.json(user);
 	});
 });

@@ -29,6 +29,11 @@ module.exports.getUserById = function(id, callback){
 	User.findById(id, callback);
 };
 
+// Get User
+module.exports.getUserByName = function(user, callback){
+	User.findOne({"user":user.user}, callback);
+};
+
 // Add user
 module.exports.addUser = function(user, callback){
 	User.create(user, callback);
