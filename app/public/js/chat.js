@@ -27,9 +27,6 @@ socket.on('connect', function(){
 });
 
 
-
-
-
 function showMessage(data){
 	var chatDisplay = document.querySelector('.chat-display');
 	var newMessage = document.createElement('p');
