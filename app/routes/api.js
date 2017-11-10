@@ -31,6 +31,23 @@ router.get('/api/user/:_id',function(request,response){
 	});
 });
 
+router.post('/api/user/login',function(request,response){
+	var user1 = request.body;
+	User.getUserByName(user1, function(err,user){
+		if(err){
+			console.log('error '+user);
+			throw err;
+		}
+		if(user.user===user1.user&&user.pass===user1.pass){
+			response.json(user);
+		}else{
+			response.status(401).send({
+			   message: 'User does not exist'
+			});
+		}
+	});	
+});
+
 router.post('/api/user',function(request,response){
 	var user1 = request.body;
 	User.getUserByName(user1, function(err,user){

@@ -6,6 +6,7 @@ $('.formUser').submit(function(e) {
 		pass: $('#pass').val()
 	}, function(){
 		alert("User created");
+		window.location = "/";
 	})
 	.fail(function(){
 		alert("Error user already exist");

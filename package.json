@@ -23,6 +23,7 @@
     "jquery": "^3.2.1",
     "mongoose": "^4.13.0",
     "nodemon": "^1.12.1",
-    "reload": "^2.2.2"
+    "reload": "^2.2.2",
+    "socket.io": "^2.0.4"
   }
 }
