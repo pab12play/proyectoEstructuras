@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 var User = require('../../app/models/user');
 
 // parse application/x-www-form-urlencoded
@@ -31,6 +32,7 @@ router.get('/api/user/:_id',function(request,response){
 	});
 });
 
+//login user
 router.post('/api/user/login',function(request,response){
 	var user1 = request.body;
 	User.getUserByName(user1, function(err,user){
@@ -38,8 +40,12 @@ router.post('/api/user/login',function(request,response){
 			console.log('error '+user);
 			throw err;
 		}
-		if(user.user===user1.user&&user.pass===user1.pass){
-			response.json(user);
+		if(user!=null&&user.user===user1.user&&user.pass===user1.pass){
+			var token = jwt.sign({user},'my_secret_key');
+			response.json({
+				user: user.user,
+				token: token
+			});
 		}else{
 			response.status(401).send({
 			   message: 'User does not exist'

@@ -1,6 +1,6 @@
 var socket = io();
 var chatUsername = document.querySelector('#chat-username');
-		var chatMessage = document.querySelector('#chat-message');
+var chatMessage = document.querySelector('#chat-message');
 
 socket.on('connect', function(){
 	var chatForm = document.forms.chatForm;

@@ -1,7 +1,7 @@
 var express = require('express');
 var reload = require('reload');
-var io = require('socket.io')();
 var app = express();
+var io = require('socket.io')();
 
 app.set('port',process.env.PORT || 3000);
 app.set('view engine','ejs');
@@ -13,7 +13,7 @@ app.use(require('./routes/chat'));
 app.use(require('./routes/index'));
 app.use(require('./routes/signUp'));
 
-var server = app.listen(app.get('port'),function(){
+server = app.listen(app.get('port'),function(){
 	console.log('Listening on port '+app.get('port'));
 });
 

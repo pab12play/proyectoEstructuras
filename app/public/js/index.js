@@ -3,9 +3,12 @@ $('.formUser').submit(function(e) {
 	$.post('/api/user/login',{
 		user: $('#user').val(),
 		pass: $('#pass').val()
-	}, function(){
+	}, function(data){
 		alert("Login successful");
-		window.location = "/";
+		console.log(data);
+		window.localStorage.setItem("session",data);
+		document.cookie='token='+ data.token;
+		window.location = "/chat";
 	})
 	.fail(function(){
 		alert("Incorrect user or password");
