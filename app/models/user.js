@@ -21,7 +21,7 @@ var User = module.exports = mongoose.model('User',userSchema);
 
 // Get Users
 module.exports.getUsers = function(callback, limit){
-	User.find(callback).limit(limit);
+	User.find({},{_id:0,pass:0,create_date:0,__v:0},callback);
 };
 
 // Get User
