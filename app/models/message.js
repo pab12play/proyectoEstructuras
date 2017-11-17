@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-
+var edge = require('edge');
+var clrMethod = edge.func('./app/data/RSA.dll');
 
 
 
@@ -37,7 +38,29 @@ module.exports.getUserMessages = function(users, callback){
 
 // Save User Messages
 module.exports.saveUserMessage = function(data, callback){
-	Message.create(data, callback);
+	var parameters = {
+	    uno: '-c',
+	    dos: '-f',
+	    tres: data.message
+	};
+	clrMethod(parameters, function (error, result) {
+	    if (error) throw error;
+	    data.message = result;
+	    Message.create(data, callback);
+	});
+};
+
+module.exports.decipherMessage = function(data){
+		var parameters = {
+	    uno: '-d',
+	    dos: '-f',
+	    tres: data.message
+	};
+	clrMethod(parameters, function (error, result) {
+	    if (error) throw error;
+	    data.message = result;
+	    return data;
+	});
 };
 
 

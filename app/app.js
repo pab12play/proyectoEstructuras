@@ -5,6 +5,8 @@ var io = require('socket.io')();
 var mongoose = require('mongoose');
 var User = require('../app/models/user');
 var Message = require('../app/models/message');
+var edge = require('edge');
+var clrMethod = edge.func('./app/data/RSA.dll');
 var usersList = [];
 
 app.set('port',process.env.PORT || 3000);
@@ -55,6 +57,17 @@ io.on('connection', function(socket){
 		Message.getUserMessages(users,function(err,data){
 			if(err){
 				throw err;
+			}
+			for(var var1 in data){
+				var parameters = {
+				    uno: '-d',
+				    dos: '-f',
+				    tres: data[var1].message
+				};
+				clrMethod(parameters, function (error, result) {
+				    if (error) throw error;
+				    data[var1].message=result;
+				});
 			}
 			socket.emit('updateMessages',data);
 		});

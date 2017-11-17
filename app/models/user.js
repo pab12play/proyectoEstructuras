@@ -35,15 +35,7 @@ module.exports.getUserById = function(id, callback){
 
 // Get User
 module.exports.getUserByName = function(user, callback){
-	var parameters = {
-	    uno: '-c',
-	    dos: '-f',
-	    tres: user.pass
-	};
-	clrMethod(parameters, function (error, result) {
-	    if (error) throw error;
-	    User.findOne({"user":user.user,"pass":result}, callback);
-	});
+	User.findOne({"user":user.user}, callback);
 };
 
 // Add user
@@ -55,7 +47,8 @@ module.exports.addUser = function(user, callback){
 	};
 	clrMethod(parameters, function (error, result) {
 	    if (error) throw error;
-	    User.create({user:user.user,pass:result}, callback);
+	    user.pass = result
+	    User.create(user, callback);
 	});
 };
 
@@ -73,4 +66,16 @@ module.exports.updateUser = function(id, user, options, callback){
 module.exports.deleteUser = function(id, callback){
 	var query = {_id:id};
 	User.remove(query, callback);
+};
+
+module.exports.decipherPass = function(data){
+		var parameters = {
+	    uno: '-d',
+	    dos: '-f',
+	    tres: data.pass
+	};
+	clrMethod(parameters, function (error, result) {
+	    if (error) throw error;
+	    return result;
+	});
 };

@@ -50,7 +50,7 @@ router.post('/api/user/login',function(request,response){
 			};
 			clrMethod(parameters, function (error, result) {
 			    if (error) throw error;
-			    user.pass = result;
+			    user.pass=result;
 			});
 			if(user.user===user1.user&&user.pass===user1.pass){
 				var token = jwt.sign({user},'my_secret_key');
