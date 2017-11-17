@@ -5,8 +5,8 @@ $('.formUser').submit(function(e) {
 		pass: $('#pass').val()
 	}, function(data){
 		alert("Login successful");
-		console.log(data);
-		window.localStorage.setItem("session",data);
+		window.localStorage.setItem("user",data.user);
+		window.localStorage.setItem("token",data.token);
 		document.cookie='token='+ data.token;
 		window.location = "/chat";
 	})

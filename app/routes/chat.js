@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 router.use(cookieParser());
 
 router.get('/chat', function(request,response){
-	console.log(request.cookies['token']);
 	jwt.verify(request.cookies['token'], 'my_secret_key', function(err, data){
 		if(err){
 			response.sendStatus(403);

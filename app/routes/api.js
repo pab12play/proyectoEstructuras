@@ -54,6 +54,7 @@ router.post('/api/user/login',function(request,response){
 	});	
 });
 
+// Create user
 router.post('/api/user',function(request,response){
 	var user1 = request.body;
 	User.getUserByName(user1, function(err,user){

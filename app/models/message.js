@@ -3,11 +3,11 @@ var mongoose = require('mongoose');
 
 // Message Schema
 var messageSchema = mongoose.Schema({
-	userSender:{
+	sender:{
 		type: String,
 		required: true
 	},
-	userRecipient:{
+	recipient:{
 		type: String,
 		required: true
 	},
@@ -29,7 +29,12 @@ var Message = module.exports = mongoose.model('message',messageSchema);
 
 // Get User Messages
 module.exports.getUserMessages = function(users, callback){
-	User.findOne({"userSender":user.userSender,"userRecipient":user.userRecipient}, callback);
+	Message.find({$or:[{sender:users.sender,recipient:users.recipient},{sender:users.recipient,recipient:users.sender}]}, callback);
+};
+
+// Save User Messages
+module.exports.saveUserMessage = function(data, callback){
+	Message.create(data, callback);
 };
 
 
@@ -45,10 +50,7 @@ module.exports.getUserById = function(id, callback){
 };
 
 
-// Add user
-module.exports.addUser = function(user, callback){
-	User.create(user, callback);
-};
+
 
 // Update user
 module.exports.updateUser = function(id, user, options, callback){

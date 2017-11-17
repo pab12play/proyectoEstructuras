@@ -5,6 +5,7 @@ var io = require('socket.io')();
 var mongoose = require('mongoose');
 var User = require('../app/models/user');
 var Message = require('../app/models/message');
+var usersList = [];
 
 app.set('port',process.env.PORT || 3000);
 app.set('view engine','ejs');
@@ -29,20 +30,34 @@ io.on('connection', function(socket){
 	console.log('User Connected');
 	
 	User.getUsers(function(err, users){
-		console.log(users);
 		if(err){
 			throw err;
 		}
 		io.emit('setUsers', users);
 	});
 
+	socket.on('username', function(userName) {
+      	usersList[userName.user] = socket.id;
+    });
+
+
 	socket.on('postMessage', function(data){
-		io.emit('updateMessages', data);
+		console.log(data);
+		Message.saveUserMessage(data,function(err,data){
+			if(err){
+				throw err;
+			}
+			io.emit('newMessages');
+		});
 	});
 
-	socket.on('getMessages', function(data){
-
-		io.emit('updateMessages', data);
+	socket.on('getMessages', function(users){
+		Message.getUserMessages(users,function(err,data){
+			if(err){
+				throw err;
+			}
+			socket.emit('updateMessages',data);
+		});
 	});
 
 	socket.on('disconnect', function(){
