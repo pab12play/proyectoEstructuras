@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+llavePrivada.key
+llavePublica.key
+app/data/RSA.dll

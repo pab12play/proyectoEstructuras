@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var User = require('../../app/models/user');
+var edge = require('edge');
+var clrMethod = edge.func('./app/data/RSA.dll');
 
 // parse application/x-www-form-urlencoded
 router.use(bodyParser.urlencoded({ extended: false }))
@@ -40,17 +42,32 @@ router.post('/api/user/login',function(request,response){
 			console.log('error '+user);
 			throw err;
 		}
-		if(user!=null&&user.user===user1.user&&user.pass===user1.pass){
-			var token = jwt.sign({user},'my_secret_key');
-			response.json({
-				user: user.user,
-				token: token
+		if(user!=null){
+			var parameters = {
+			    uno: '-d',
+			    dos: '-f',
+			    tres: user.pass
+			};
+			clrMethod(parameters, function (error, result) {
+			    if (error) throw error;
+			    user.pass = result;
 			});
+			if(user.user===user1.user&&user.pass===user1.pass){
+				var token = jwt.sign({user},'my_secret_key');
+				response.json({
+					user: user.user,
+					token: token
+				});
+			}else{
+				response.status(401).send({
+				   message: 'User does not exist'
+				});
+			}
 		}else{
-			response.status(401).send({
-			   message: 'User does not exist'
-			});
-		}
+				response.status(401).send({
+				   message: 'User does not exist'
+				});
+			}
 	});	
 });
 

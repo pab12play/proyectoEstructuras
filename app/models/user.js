@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+var edge = require('edge');
 
 // User Schema
 var userSchema = mongoose.Schema({
@@ -17,6 +17,10 @@ var userSchema = mongoose.Schema({
 	}
 });
 
+var clrMethod = edge.func('./app/data/RSA.dll');
+
+
+
 var User = module.exports = mongoose.model('User',userSchema);
 
 // Get Users
@@ -31,12 +35,28 @@ module.exports.getUserById = function(id, callback){
 
 // Get User
 module.exports.getUserByName = function(user, callback){
-	User.findOne({"user":user.user}, callback);
+	var parameters = {
+	    uno: '-c',
+	    dos: '-f',
+	    tres: user.pass
+	};
+	clrMethod(parameters, function (error, result) {
+	    if (error) throw error;
+	    User.findOne({"user":user.user,"pass":result}, callback);
+	});
 };
 
 // Add user
 module.exports.addUser = function(user, callback){
-	User.create(user, callback);
+	var parameters = {
+	    uno: '-c',
+	    dos: '-f',
+	    tres: user.pass
+	};
+	clrMethod(parameters, function (error, result) {
+	    if (error) throw error;
+	    User.create({user:user.user,pass:result}, callback);
+	});
 };
 
 // Update user
