@@ -18,6 +18,7 @@ app.use(require('./routes/api'));
 app.use(require('./routes/chat'));
 app.use(require('./routes/index'));
 app.use(require('./routes/signUp'));
+app.use(require('./routes/upload'));
 
 server = app.listen(app.get('port'),function(){
 	console.log('Listening on port '+app.get('port'));
@@ -44,14 +45,12 @@ io.on('connection', function(socket){
 
 
 	socket.on('postMessage', function(data){
-		if(data.message!==''){
-			Message.saveUserMessage(data,function(err,data){
-				if(err){
-					throw err;
-				}
-				io.emit('newMessages');
-			});
-		}
+		Message.saveUserMessage(data,function(err,data){
+			if(err){
+				throw err;
+			}
+			io.emit('newMessages');
+		});
 	});
 
 	socket.on('getMessages', function(users){
@@ -75,28 +74,27 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('search', function(users){
-		if(users.message!==''){
-			Message.getUserMessages(users,function(err,data){
-				if(err){
-					throw err;
-				}
-				var matches =[];
-				for(var var1 in data){
-					var parameters = {
-					    uno: '-d',
-					    dos: '-f',
-					    tres: data[var1].message
-					};
-					clrMethod(parameters, function (error, result) {
-					    if (error) throw error;
-					    if(result.search(users.message)>-1){
-					    	matches.push({sender:data[var1].sender,recipient:data[var1].recipient,message:result});
-					    }
-					});
-				}
-				socket.emit('updateSearch',matches);
-			});
-		}
+		Message.getUserMessages(users,function(err,data){
+			if(err){
+				throw err;
+			}
+			var matches =[];
+			for(var var1 in data){
+				var parameters = {
+				    uno: '-d',
+				    dos: '-f',
+				    tres: data[var1].message
+				};
+				clrMethod(parameters, function (error, result) {
+				    if (error) throw error;
+				    if(result.search(users.message)>-1){
+				    	matches.push({sender:data[var1].sender,recipient:data[var1].recipient,message:result});
+				    }
+				});
+			}
+			
+			socket.emit('updateSearch',matches);
+		});
 	});
 
 	socket.on('disconnect', function(){
