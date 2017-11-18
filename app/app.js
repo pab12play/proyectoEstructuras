@@ -44,12 +44,14 @@ io.on('connection', function(socket){
 
 
 	socket.on('postMessage', function(data){
-		Message.saveUserMessage(data,function(err,data){
-			if(err){
-				throw err;
-			}
-			io.emit('newMessages');
-		});
+		if(data.message!==''){
+			Message.saveUserMessage(data,function(err,data){
+				if(err){
+					throw err;
+				}
+				io.emit('newMessages');
+			});
+		}
 	});
 
 	socket.on('getMessages', function(users){
@@ -73,27 +75,28 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('search', function(users){
-		Message.getUserMessages(users,function(err,data){
-			if(err){
-				throw err;
-			}
-			var matches =[];
-			for(var var1 in data){
-				var parameters = {
-				    uno: '-d',
-				    dos: '-f',
-				    tres: data[var1].message
-				};
-				clrMethod(parameters, function (error, result) {
-				    if (error) throw error;
-				    if(result.search(users.message)>-1){
-				    	matches.push({sender:data[var1].sender,recipient:data[var1].recipient,message:result});
-				    }
-				});
-			}
-			
-			socket.emit('updateSearch',matches);
-		});
+		if(users.message!==''){
+			Message.getUserMessages(users,function(err,data){
+				if(err){
+					throw err;
+				}
+				var matches =[];
+				for(var var1 in data){
+					var parameters = {
+					    uno: '-d',
+					    dos: '-f',
+					    tres: data[var1].message
+					};
+					clrMethod(parameters, function (error, result) {
+					    if (error) throw error;
+					    if(result.search(users.message)>-1){
+					    	matches.push({sender:data[var1].sender,recipient:data[var1].recipient,message:result});
+					    }
+					});
+				}
+				socket.emit('updateSearch',matches);
+			});
+		}
 	});
 
 	socket.on('disconnect', function(){
