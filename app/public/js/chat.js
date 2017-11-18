@@ -1,9 +1,12 @@
 var socket = io();
 var chatUsername = window.localStorage.getItem('user');
 var chatMessage = document.querySelector('#chat-message');
+var searchMessage = document.querySelector('#search-message');
+var chatRecipient;
 
 socket.on('connect', function(){
 	var chatForm = document.forms.chatForm;
+	var search = document.querySelector('#search-btn');
 
 	socket.emit('username', {
 		user:chatUsername
@@ -12,7 +15,7 @@ socket.on('connect', function(){
 	chatForm.addEventListener('submit',function(e){
 		e.preventDefault();
 
-		var chatRecipient = $("input:radio[name='Radios1']:checked").val();
+		chatRecipient = $("input:radio[name='Radios1']:checked").val();
 
 		if(chatRecipient!=undefined){
 			socket.emit('postMessage', {
@@ -24,7 +27,30 @@ socket.on('connect', function(){
 			chatMessage.value='';
 			chatMessage.focus();
 		}else{
-			console.log("Select a friend");
+			var chatDisplay = document.querySelector('.chat-display');
+			var newMessage = document.createElement('p');
+			newMessage.innerHTML = 'Select a friend';
+			chatDisplay.insertBefore(newMessage, chatDisplay.firstChild);
+		}
+	});
+
+	search.addEventListener('click',function(e){
+		e.preventDefault();
+		chatRecipient = $("input:radio[name='Radios1']:checked").val();
+
+		if(chatRecipient!=undefined){
+			socket.emit('search', {
+				sender : chatUsername,
+				recipient : chatRecipient,
+				message: searchMessage.value
+			});
+
+			searchMessage.value='';
+		}else{
+			var searchDisplay = document.querySelector('#search-display');
+			var newMessage = document.createElement('p');
+			newMessage.innerHTML = 'Select a friend';
+			searchDisplay.insertBefore(newMessage, searchDisplay.firstChild);
 		}
 	});
 
@@ -45,6 +71,10 @@ socket.on('connect', function(){
 		showMessage(data);
 	});	
 
+	socket.on('updateSearch',function(data){
+		showSearch(data);
+	});	
+
 	socket.on('setUsers',function(data){
 		$('#radios').empty();
 		jQuery.each(data, function(i, val) {
@@ -55,6 +85,9 @@ socket.on('connect', function(){
 				x.name = "Radios1";
 				x.value = val.user;
 				x.addEventListener('click',getMessages);          
+				if(val.user===chatRecipient){
+					x.checked = true;
+				}
 				label.appendChild(x);
 				label.appendChild(document.createTextNode(val.user));
 				$('#radios').append(label);
@@ -75,3 +108,12 @@ function showMessage(data){
 	});
 }
 
+function showSearch(data){
+	$('#search-display').empty();
+	jQuery.each(data, function(i, val) {
+		var searchDisplay = document.querySelector('#search-display');
+		var newMessage = document.createElement('p');
+		newMessage.innerHTML = '<strong>' + val.sender + '</strong>: '+ val.message;
+		searchDisplay.insertBefore(newMessage, searchDisplay.firstChild);
+	});
+}

@@ -1,46 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script>
-    
-  </script>
-	<title>Chat</title>
-	<!--<link rel="stylesheet" href="./css/style.css">-->
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+</style>
+<title>Chat</title>
 </head>
 <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <article class="chat">
-            <header class="chat-header">
-              <div class="h3 chat-title">Chat
-              </div><!-- chat-title -->
-            </header><!-- chat-header -->
-            <form name="chatForm" class="form-horizontal chat-form">
-                <label for="chat-message" class="col-sm-2 control-label">Message</label>
-                <div class="col-sm-10">
-                  <div class="input-group">
-                    <input type="text" placeholder="Enter a message, then press enter" class="form-control" id="chat-message" rows="2" autocomplete="off"
-                     required>
-                    <span class="input-group-btn">
-                      <button id="chat-submit" class="btn btn-info" type="submit">Chat</button>
-                    </span>
-                  </div><!-- input-group -->
-                </div><!-- col-sm-10 -->
-              </div><!-- form-group -->
-            </form>
-            <div class="panel panel-default">
-              <div class="panel-body chat-display">
-                <p class="text-muted chat-text">Welcome...add your message using the form above</p>
-              </div><!-- panel-body -->
-            </div><!-- panel-default -->
-          </article><!-- article -->
-        </div><!-- col-sm-12 -->
-      </div><!-- row -->
-    </div><!-- container -->
+
+<h2>Chat Room</h2>
+
+<div class="row">
+  <div class="column" style="background-color:#b0e6b6;">
     <p id ="radios">
       
     </p>
+  </div>
+  <div class="column" style="background-color:#b0e6d1;">
+    <form name="chatForm" class="form-horizontal chat-form">
+        <label for="chat-message" class="col-sm-2 control-label">Message</label>
+            <input type="text" placeholder="Enter a message, then press enter" class="form-control" id="chat-message" rows="2" autocomplete="off"
+             required>
+            <span class="input-group-btn">
+              <button id="chat-submit" class="btn btn-info" type="submit">Chat</button>
+            </span>
+    </form>
+    <div class="chat-display">
+      <p class="text-muted chat-text">Welcome...add your message using the form above</p>
+    </div><!-- panel-body -->
+  </div>
+  <div class="column" style="background-color:#b0e0e6;">
+    <label for="chat-message" class="col-sm-2 control-label">Search</label>
+    <input type="text" placeholder="Enter some text" class="form-control" id="search-message" rows="2" autocomplete="off"
+     required>
+    <span class="input-group-btn">
+      <button id="search-btn" class="btn btn-info" type="submit">Search</button>
+    </span>
+    <div id="search-display">
+      <p class="text-muted chat-text">Search for recent messages</p>
+    </div><!-- panel-body -->
+  </div>
+</div>
   <script src="/js/socket.io.js"></script>
   <script src="/js/jquery.js"></script>
   <script src="/js/chat.js"></script>
